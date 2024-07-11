@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { useRef } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import gsap from 'gsap'; // <-- import GSAP
+import { useGSAP } from '@gsap/react'; // <-- import the hook from our React package
+
+gsap.registerPlugin(useGSAP);
+
+// TODO: OnClick animations, placing all the shapes similar to figma tempalte
+// Play with animations
+function Box({ children }) {
+  return <div className="box gradient-blue">{children}</div>;
 }
 
-export default App;
+function Circle({ children }) {
+  return <div className="circle gradient-green">{children}</div>;
+}
+
+export default function App() {
+    const container = useRef();
+    const tl = useRef();
+
+    useGSAP(
+        () => {
+
+          tl.current = gsap
+          .timeline()
+          .to(".box", {
+            rotate: 360
+          })
+          .to(".circle", {
+            x: 100
+          });
+            // gsap code here...
+            // gsap.from('.box', { opacity: 0, stagger: 0.1 }); // <-- automatically reverted
+        }, { scope: container }
+    ); // <-- scope for selector text (optional)
+
+    return (
+        <div ref={container} className="app">
+          <Box>Box</Box>
+          <Circle>Circle</Circle>
+            {/* <div className="box">Hello</div>
+            <div className="circle">Hello</div> */}
+        </div>
+    );
+ }
