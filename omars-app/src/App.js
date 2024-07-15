@@ -1,46 +1,60 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
+import ReactDOM from 'react-dom';
 
 import gsap from 'gsap'; // <-- import GSAP
 import { useGSAP } from '@gsap/react'; // <-- import the hook from our React package
-
-gsap.registerPlugin(useGSAP);
+import './App.css'
 
 // TODO: OnClick animations, placing all the shapes similar to figma tempalte
 // Play with animations
-function Box({ children }) {
-  return <div className="box gradient-blue">{children}</div>;
+
+
+// Function for making planets (this will include the sun)
+// Make it generate circles
+// Parameters will be: size, color, location
+
+function App() {
+
+  const container = useRef();
+  const { contextSafe } = useGSAP();
+
+  const onEnter = contextSafe(({ currentTarget }) => {
+    gsap.to(currentTarget, { rotation: "+=360" });
+    gsap.to(currentTarget, { scale: "+=0.5" })
+    
+  });
+
+  useGSAP(() => {
+    generateStars(100);
+  });
+
+
+  // Generate Stars randomly across a background
+  const generateStars = (numStars) => {
+    const starContainers = document.getElementById("star-container");
+    for (let i = 0; i < numStars; i++){
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = `${Math.random() * 100}vh`;
+      star.style.left = `${Math.random() * 100}vw`;
+      starContainers.appendChild(star);
+    }
+  };
+
+  // Spin the sun in and out on click
+  const spinSun = () => {
+    gsap.to('#sun', {scale: "+=1", duration: 1, ease: "power2.inOut"});
+  }
+
+  return (
+    <div className="App">
+      <div id = "star-container"></div>
+      <div id= "sun" className='sun' onClick={spinSun}></div>
+    </div>
+  );
 }
 
-function Circle({ children }) {
-  return <div className="circle gradient-green">{children}</div>;
-}
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
 
-export default function App() {
-    const container = useRef();
-    const tl = useRef();
-
-    useGSAP(
-        () => {
-
-          tl.current = gsap
-          .timeline()
-          .to(".box", {
-            rotate: 360
-          })
-          .to(".circle", {
-            x: 100
-          });
-            // gsap code here...
-            // gsap.from('.box', { opacity: 0, stagger: 0.1 }); // <-- automatically reverted
-        }, { scope: container }
-    ); // <-- scope for selector text (optional)
-
-    return (
-        <div ref={container} className="app">
-          <Box>Box</Box>
-          <Circle>Circle</Circle>
-            {/* <div className="box">Hello</div>
-            <div className="circle">Hello</div> */}
-        </div>
-    );
- }
+export default App;
