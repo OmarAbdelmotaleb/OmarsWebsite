@@ -2,6 +2,7 @@
   text-align: center;
   position: relative;
   z-index: 1;
+  overflow: auto;
 }
 
 .App-logo {
@@ -78,9 +79,19 @@ body {
 
 .App, .container {
   display: flex;
+  border: 2px solid white;
   align-items: center;
   justify-content: space-around;
   min-height: 100vh;
+}
+
+#solar_system {
+  display: flex;
+  border: 2px solid blue;
+  border-radius: 100%;
+  align-items: left;
+  justify-content: space-around;
+  margin-left: auto;
 }
 
 #star-container {
@@ -100,9 +111,36 @@ body {
   border-radius: 50%;
 }
 
-.planet {
+.sun {
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  background-color: yellow;
+  z-index: 2;
+  /* align-items: flex-end; */
+}
+.sun2 {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  background-color: blue;
+  z-index: 2;
+  /* align-items: flex-end; */
+}
+.sun3 {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  background-color: red;
   z-index: 2;
   /* align-items: flex-end; */
 }

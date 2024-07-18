@@ -5,160 +5,110 @@ import gsap from 'gsap'; // <-- import GSAP
 import { useGSAP } from '@gsap/react'; // <-- import the hook from our React package
 import './App.css'
 
-// TODO: OnClick animations, placing all the shapes similar to figma tempalte
-// Play with animations
-
-
-// Function for making planets (this will include the sun)
-// Make it generate circles
-// Parameters will be: size, color, location
 
 gsap.registerPlugin(MotionPathPlugin);
 
+function Planet({ click, pName, children, style}) {
+  const planetRef = useRef();
+  return <div ref={planetRef} onClick={click} className={pName} style={style}>{children}</div>;
+};
+
 function App() {
 
-  const container = useRef();
+  // const container = useRef();
   const { contextSafe } = useGSAP();
 
   const onEnter = contextSafe(({ currentTarget }) => {
-    gsap.to(currentTarget, { rotation: "+=360", duration: 1});
-    gsap.to(currentTarget, { scale: "+=1.5", duration: 1})
+    gsap.to(currentTarget, {rotation: "+=360", duration: 1});
+    gsap.to(currentTarget, {scale:"+=1.5", duration: 1})
     
   });
 
-  // useGSAP(() => {
-  //   generateStars(100);
-  //   generatePlanets();
-  // }, {scope: container});
+  // const dumbass = contextSafe(({currentTarget}) =>{
+  //   function checkPlanet(planet){
+  //     return planet.name === "sun";
+  //   };
+  //   const idx = planets.findIndex(checkPlanet);
+  //   delete planets[idx];
+  //   console.log(planets);
+  // });
 
 
-  useGSAP(() => {
-    const ctx = gsap.context(() =>{
-      generateStars(100);
-      generatePlanets(); 
-    }, container);
-    return () => ctx.revert();
-  }, []);
+  // TODO: 
+
+  // Each Planet has 3 points of data
+  // - The text above the planet
+  // - The image(s) on the planet
+  // - The links
+    // Programmatically
+      // Color
+      // Size
+      // Position (optional)
+      // OnClick (optional)
+      // Image SRC
+      // Text InLine
+      // Hyperlinks
+      // background image (future, custom jpegs for planets vs basic colors)
+
+      // We should be able to modify orbitting values (i.e. speed, make speed the same?) 
+      // Orbits should be automatically scaled based on the position
+      
+
+  // const planetMap = new Map();
   
+  // planetMap.set("Sun", new Planet("Test", onEnter, "Testing", "SunTest"));
 
-  const generatePlanets = () => {
-    createPlanet('sun', 50, 'yellow', 0, onEnter);
-    createPlanet('planet1', 30, 'blue', 100, onEnter);
-    createPlanet('planet2', 40, 'gray', 150, onEnter);
-    createPlanet('planet3', 30, 'magenta', 200, onEnter);
-    createPlanet('planet4', 35, 'green', 250, onEnter);
-  };
+  // Class Name correlates with CSS
 
-  const createPlanet = (id, size, color, radius, onClickHandler) => {
-    const planet = document.createElement('div');
-    planet.id = id;
-    planet.className = 'planet';
-    gsap.set(planet, {
-      width: `${size}px`,
-      height: `${size}px`,
-      background: color,
-      position: 'absolute',
-      borderRadius: '50%',
-      cursor: 'pointer'
-    });
-    planet.addEventListener('click', onClickHandler);
-    document.body.appendChild(planet);
-
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-
-    gsap.to(planet, {
-      motionPath: {
-        path: [
-          { x: centerX + radius, y: centerY },
-          { x: centerX, y: centerY + radius },
-          { x: centerX - radius, y: centerY },
-          { x: centerX, y: centerY - radius },
-          { x: centerX + radius, y: centerY }
-        ],
-        align: [
-          { x: centerX + radius, y: centerY },
-          { x: centerX, y: centerY + radius },
-          { x: centerX - radius, y: centerY },
-          { x: centerX, y: centerY - radius },
-          { x: centerX + radius, y: centerY }
-        ],
-        alignOrigin: [0.5, 0.5]
-      },
-      duration: (radius / 50),
-      repeat: -1,
-      ease: 'linear'
-    });
-  };
-
-  
-  // // TEMP: Created planets with values for POC
-  // const generatePlanets = () => {
-  //   createPlanet('sun', 50, 'yellow', 20, onEnter);
-  //   // createPlanet('sun', 50, 'blue', '20%', '50%', onEnter);
-  //   // createPlanet('sun', 100, 'yellow', '40%', '20%', onEnter);
-  // };
-
-
-  // // Create a planet with unique ID values stored in DIV classes
-  // const createPlanet = (id, size, color, radius, onClickHandler) => {
-  //   const planet = document.createElement('div');
-  //   planet.id = id;
-  //   planet.className = 'planet';
-  //   gsap.set(planet, {
-  //     width: `${size}px`,
-  //     height: `${size}px`,
-  //     background : color,
-  //     top: '70%',
-  //     left: '70%',
-  //     position: 'absolute',
-  //     borderRadius: '50%',
-  //     cursor:'pointer',
-  //     transformOrigin: `${radius}px 0`
-  //   });
-  //   planet.addEventListener('click', onClickHandler);
-  //   document.body.appendChild(planet);
-
-   
-  //   gsap.to(planet, {
-  //     motionPath:{ 
-  //       path: getCirclePath(radius),
-  //       align: getCirclePath(radius),
-  //       alignOrigin: [0.5, 0.5]
-  //     },
-  //     duration: (radius / 50),
-  //     repeat: -1,
-  //     ease: 'linear'
-  //   });
- 
-  // };
-
-  const getCirclePath = (radius) => {
-    return [
-      { x: radius, y: 0 },
-      { x: 0, y: radius },
-      { x: -radius, y: 0 },
-      { x: 0, y: -radius },
-      { x: radius, y: 0 },
-    ]
+  function temp(i){
+    return i + 'px';
   };
 
 
-  // Generate Stars randomly across a background
-  const generateStars = (numStars) => {
-    const starContainers = document.getElementById("star-container");
-    for (let i = 0; i < numStars; i++){
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.top = `${Math.random() * 100}vh`;
-      star.style.left = `${Math.random() * 100}vw`;
-      starContainers.appendChild(star);
-    }
-  };
+  const planets = [
+    {name: 'sun',  className: 'sun',  label: 'Sunny', top: temp(1080), left: temp(0)},
+    {name: 'sun2', className: 'sun2', label: 'Sun2',  top: '30%', left: '25%'},
+    {name: 'sun3', className: 'sun3', label: 'Sun3',  top: '75%', left: '75%'},
+  ]
 
+  // Key : Sun
+  // Value : List of properties (including linked children)
+    // OnClick() -> Render Linked Children (Linked Planets)
+  /*
+
+  Operate in Parallel data structures
+  map Planets(Sun, Planet(...))
+  map Data(Sun,[text,img,...])
+
+  onEnter({currentPlanet}
+    animate Planets(currentPlanet)
+    animate/display Data(currentPlanet)
+
+    goBack? -> revert to the previous state for all the planets
+    NOTE: gsap has a timeline feature which automatically tracks current animation and previous animations
+  )
+
+  */
+
+  // Planets.set("Sun", new Planet())
+
+  // Datastructure
+    // Call to create planet and return div class
   return (
     <div className="App">
-      <div id = "star-container"></div>
+      <div id = "solar_system">
+      {planets.map((planet) => (
+        <Planet
+          key={planet.name}
+          click={onEnter}
+          pName={planet.className}
+          style={{ top: planet.top, left: planet.left, position:'absolute', transform: 'translate(-50%, -50%)'}}
+        >
+          {planet.label}
+        </Planet>
+      ))}
+      {/* call a single function that parses datastructure to get all div classes and populate screen */}
+      </div>
     </div>
   );
 }
@@ -167,3 +117,26 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 
 export default App;
+
+// STARS
+
+  // useGSAP(() => {
+  //   const ctx = gsap.context(() =>{
+  //     generateStars(100);
+  //   }, solar_system);
+  //   return () => ctx.revert();
+  // }, []);
+  
+
+  // Generate Stars randomly across a background
+  // const generateStars = (numStars) => {
+  //   const starContainers = document.getElementById("star-container");
+  //   for (let i = 0; i < numStars; i++){
+  //     const star = document.createElement('div');
+  //     star.className = 'star';
+  //     star.style.top = `${Math.random() * 100}vh`;
+  //     star.style.left = `${Math.random() * 100}vw`;
+  //     starContainers.appendChild(star);
+  //   }
+  // };
+
