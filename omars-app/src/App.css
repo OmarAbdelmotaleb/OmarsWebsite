@@ -111,7 +111,7 @@ body {
   border-radius: 50%;
 }
 
-.sun {
+/* .sun {
   width: 200px;
   height: 200px;
   border-radius: 50%;
@@ -120,7 +120,7 @@ body {
   justify-content: center;
   background-color: yellow;
   z-index: 2;
-  /* align-items: flex-end; */
+ 
 }
 .sun2 {
   width: 70px;
@@ -131,7 +131,7 @@ body {
   justify-content: center;
   background-color: blue;
   z-index: 2;
-  /* align-items: flex-end; */
+  
 }
 .sun3 {
   width: 200px;
@@ -142,5 +142,5 @@ body {
   justify-content: center;
   background-color: red;
   z-index: 2;
-  /* align-items: flex-end; */
-}
+ 
+}  */

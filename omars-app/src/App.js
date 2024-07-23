@@ -1,4 +1,12 @@
-import React, { useRef } from 'react';
+ /*
+  TODO: 
+  - Cleanup the way that planets get added cuz we need refresh the page everytime which means something is wrong again.
+  - Populate the data structure and we'll customize automatically ig // bludclat mfer
+  - Work on Orbiting animation
+*/ 
+
+
+import React, { useRef, useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import gsap from 'gsap'; // <-- import GSAP
@@ -17,12 +25,67 @@ function App() {
 
   // const container = useRef();
   const { contextSafe } = useGSAP();
+  
+  
 
   const onEnter = contextSafe(({ currentTarget }) => {
     gsap.to(currentTarget, {rotation: "+=360", duration: 1});
     gsap.to(currentTarget, {scale:"+=1.5", duration: 1})
     
   });
+  // useEffect(() => { 
+  //   const myRequest = new Request("Planets.json");
+  //   fetch(myRequest)
+  //   .then(response => {
+  //     console.log("We made it");
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     console.log(data);
+  //   })
+  //   .catch(error => {
+  //     console.error('Error fetching the JSON file:', error);
+  //   });
+  // });
+
+
+  const logPlanets = contextSafe((planets) => {
+    planets.forEach(planet => {
+      console.log(`Name: ${planet.name}, ClassName:${planet.className}, top styling:${planet.style.top}`);
+    });
+  });
+
+  const outputPlanetList =[];
+  const parseJsonData = contextSafe((PlanetList) => {
+    PlanetList.forEach(planler => {
+      outputPlanetList.push(planler);
+    });
+    for (let i = 1; i < outputPlanetList.length; i++){
+      console.log(outputPlanetList[i].style.top);
+ 
+      if (outputPlanetList[i].style.top === null){
+        // do algo shit here for top
+        // temp code
+        console.log("poggers"); 
+        // outputPlanetList[i].style.top = `${Math.floor(Math.random() * 100) + 1}%`;
+        outputPlanetList[i].style.top = outputPlanetList[i-1].style.top;
+        
+        console.log(outputPlanetList[i].style.top);
+      }
+      if (outputPlanetList[i].style.left === null){
+        // do algo shit here for left
+        // temp code
+        // outputPlanetList[i].style.left = `${Math.floor(Math.random() * 100) + 1}%`;
+        outputPlanetList[i].style.left = outputPlanetList[i-1].style.left + 20;
+      }
+     }
+  });
+  const example = require('./Planets.json');
+  //logPlanets(example.Planets);
+  parseJsonData(example.Planets);
 
   // const dumbass = contextSafe(({currentTarget}) =>{
   //   function checkPlanet(planet){
@@ -33,8 +96,7 @@ function App() {
   //   console.log(planets);
   // });
 
-
-  // TODO: 
+ 
 
   // Each Planet has 3 points of data
   // - The text above the planet
@@ -63,13 +125,25 @@ function App() {
   function temp(i){
     return i + 'px';
   };
+  // First planet will be at 50% 50%
+  // i-th planet will be the first planet's position + N
+  // Where N is the gap we make between planets
 
+  // Planet Name
+  // Planet look
 
-  const planets = [
-    {name: 'sun',  className: 'sun',  label: 'Sunny', top: temp(1080), left: temp(0)},
-    {name: 'sun2', className: 'sun2', label: 'Sun2',  top: '30%', left: '25%'},
-    {name: 'sun3', className: 'sun3', label: 'Sun3',  top: '75%', left: '75%'},
-  ]
+  // Main functionality for the planet will be the Root planet
+  // - onClick will zoom in on the planet, and will shrink the other planets (effectively hiding them)
+  // - This will involve transitioning the planet to the center of the screen while the other ones disappear (0.2 sec animation for hiding, 1 sec for moving)
+  // - It will the corresponding appear on screen
+  // --- Example would be if I clicked on GitHub planet, the respective Moons (carrying imgs and hyperlinks) will fade in on screen after the other planets fade out.
+  // - If you click back or whatever it will return to the original state (timeline?)
+
+  // const planets = [
+  //   {name: 'sun',  className: 'sun',  label: 'Sunny', top: '50%', left: '50%'},
+  //   {name: 'sun2', className: 'sun2', label: 'Sun2',  top: '50%', left: '60%'},
+  //   {name: 'sun3', className: 'sun3', label: 'Sun3',  top: '50%', left: '70%'},
+  // ]
 
   // Key : Sun
   // Value : List of properties (including linked children)
@@ -97,12 +171,26 @@ function App() {
   return (
     <div className="App">
       <div id = "solar_system">
-      {planets.map((planet) => (
+      {outputPlanetList.map((planet) => (
         <Planet
           key={planet.name}
           click={onEnter}
           pName={planet.className}
-          style={{ top: planet.top, left: planet.left, position:'absolute', transform: 'translate(-50%, -50%)'}}
+          style={{ 
+            top: `${planet.style.top}%`,
+            left: `${planet.style.left}%`,
+            backgroundColor: planet.style.color,
+            position: planet.style.position,
+            width: planet.style.width,
+            height: planet.style.height,
+            transform: 'translate(-50%, -50%)',
+            borderRadius: '50%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            cursor: 'pointer',
+            zIndex: 2
+          }}
         >
           {planet.label}
         </Planet>
@@ -128,7 +216,7 @@ export default App;
   // }, []);
   
 
-  // Generate Stars randomly across a background
+  // // Generate Stars randomly across a background
   // const generateStars = (numStars) => {
   //   const starContainers = document.getElementById("star-container");
   //   for (let i = 0; i < numStars; i++){
