@@ -42,7 +42,7 @@
   
   async function fetchPlanets() {
     try {
-      const response = await fetch('/planets.json');
+      const response = await fetch('/datasets/planets.json');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
