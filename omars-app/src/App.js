@@ -69,7 +69,7 @@ function processPlanets(PlanetList) {
       planet.style.top = PlanetList[index - 1].style.top;
     }
     if(!planet.style.left) {
-      planet.style.left = PlanetList[index - 1].style.left + 20;
+      planet.style.left = PlanetList[index - 1].style.left + (60 / PlanetList.length);
     }
     return planet;
   });

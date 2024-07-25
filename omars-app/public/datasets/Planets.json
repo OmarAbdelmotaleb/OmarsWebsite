@@ -19,7 +19,7 @@
             "style":{
                 "top":null,
                 "left":null,
-                "color":"yellow",
+                "color":"blue",
                 "position":"absolute",
                 "width":"200px",
                 "height":"200px"
@@ -32,12 +32,25 @@
             "style":{
                 "top":null,
                 "left":null,
-                "color":"yellow",
+                "color":"green",
                 "position":"absolute",
                 "width":"200px",
                 "height":"200px"
             },
             "label":"bongoman11000"
+        },
+        {
+            "name":"Sun4",
+            "className":"AboutMe4",
+            "style":{
+                "top":null,
+                "left":null,
+                "color":"red",
+                "position":"absolute",
+                "width":"200px",
+                "height":"200px"
+            },
+            "label":"bongoman12000"
         }
     ]
  }
