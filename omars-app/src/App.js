@@ -2,6 +2,8 @@
   TODO: 
   - Populate the data structure and we'll customize automatically ig 
   - Work on Orbiting animation
+  - Work on Zooming / Fade animations on a timeline
+  - Dynamically sizing planets
 
 
   Each Planet has 3 points of data
@@ -64,16 +66,33 @@ function Planet({ click, pName, children, style }) {
 }
 
 function processPlanets(PlanetList) {
-  return PlanetList.map((planet, index) => {
-    if(!planet.style.top) {
-      planet.style.top = PlanetList[index - 1].style.top;
-    }
-    if(!planet.style.left) {
-      planet.style.left = PlanetList[index - 1].style.left + (60 / PlanetList.length);
-    }
-    return planet;
+  // return PlanetList.map((planet, index) => {
+  //   if(!planet.style.top) {
+  //     planet.style.top = PlanetList[index - 1].style.top;
+  //   }
+  //   if(!planet.style.left) {
+  //     planet.style.left = PlanetList[index - 1].style.left + (60 / PlanetList.length);
+  //   }
+  //   return planet;
+  // });
+
+  const padding = 3;
+  const planetsWithoutTop = PlanetList.filter(planet => !planet.style.top);
+  const planetsWithoutLeft = PlanetList.filter(planet => !planet.style.left);
+
+  const sunTop = 50;
+  const sunLeft = 53;
+  const stepTop = (50 - padding) / (planetsWithoutTop.length + 1);
+  const stepLeft = (50 - padding) / (planetsWithoutLeft.length + 1);
+  planetsWithoutTop.forEach((planet, index) => {
+    planet.style.top = sunTop;
   });
+  planetsWithoutLeft.forEach((planet, index) => {
+    planet.style.left = sunLeft + (index + 1) * stepLeft;
+  });
+  return PlanetList;
 }
+
 
 function GetPlanets({ planets, onEnter }) {
   

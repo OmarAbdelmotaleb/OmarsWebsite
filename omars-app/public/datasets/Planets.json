@@ -8,49 +8,50 @@
                 "left":50,
                 "color":"yellow",
                 "position":"absolute",
-                "width":"200px",
-                "height":"200px"
+                "width":"192px",
+                "height":"192px"
             },
-            "label":"bongoman9000"
+            "label":"Sun"
         },
         {
-            "name":"Sun2",
-            "className":"AboutMe2",
+            "name":"Planet1",
+            "className":"LinkedIn",
             "style":{
                 "top":null,
                 "left":null,
-                "color":"blue",
+                "color":"cyan",
                 "position":"absolute",
-                "width":"200px",
-                "height":"200px"
+                "width":"96px",
+                "height":"96px"
             },
-            "label":"bongoman10000"
+            "label":"LinkedIn"
         },
         {
-            "name":"Sun3",
-            "className":"AboutMe3",
+            "name":"Planet2",
+            "className":"GitHub",
             "style":{
                 "top":null,
                 "left":null,
-                "color":"green",
+                "color":"gray",
                 "position":"absolute",
-                "width":"200px",
-                "height":"200px"
+                "width":"96px",
+                "height":"96px"
             },
-            "label":"bongoman11000"
+            "label":"GitHub"
         },
         {
-            "name":"Sun4",
-            "className":"AboutMe4",
+            "name":"Planet3",
+            "className":"Blog",
             "style":{
                 "top":null,
                 "left":null,
-                "color":"red",
+                "color":"hotpink",
                 "position":"absolute",
-                "width":"200px",
-                "height":"200px"
+                "width":"96px",
+                "height":"96px"
             },
-            "label":"bongoman12000"
+            "label":"Blog"
         }
+        
     ]
  }
