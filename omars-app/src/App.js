@@ -31,7 +31,7 @@
   // - If you click back or whatever it will return to the original state (timeline?)
 
 
-import React, { useRef, useEffect} from 'react';
+import React, { useRef} from 'react';
 import ReactDOM from 'react-dom/client';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import gsap from 'gsap'; // <-- import GSAP
@@ -39,7 +39,12 @@ import { useGSAP } from '@gsap/react'; // <-- import the hook from our React pac
 import './App.css'
 
 
+
 gsap.registerPlugin(MotionPathPlugin);
+
+const planets_json = require('./Planets.json');
+// delete require.cache[require.resolve('./Planets.json')];
+
 
 function Planet({ click, pName, children, style }) {
   let planetRef = useRef();
@@ -59,9 +64,13 @@ function processPlanets(PlanetList) {
 }
 
 function GetPlanets({onEnter}) {
-  let lalala = processPlanets(require('./Planets.json').Planets);
+  
+  const PlanetList = planets_json.Planets;
+  const PlanetMap = processPlanets(PlanetList);
+  
+  // let lalala = processPlanets(planets_json.Planets);
   return (
-    lalala.map((planet) => (
+    PlanetMap.map((planet) => (
     <Planet
       key={planet.name}
       click={onEnter}
@@ -93,22 +102,16 @@ function logPlanets(planets) {
   });
 }
 
-let lalala = [];
 function App() {
 
   const container = useRef();
   const { contextSafe } = useGSAP({scope: container});
-  
 
   const onEnter = contextSafe(({ currentTarget }) => {
     gsap.to(currentTarget, {rotation: "+=360", duration: 1});
     gsap.to(currentTarget, {scale:"+=1.5", duration: 1})
     
   });
-
-  // useGSAP(() => {
-  // }, {scope: container});
-
 
   return (
     <div className="App">
@@ -150,47 +153,4 @@ export default App;
   // };
 
 
-  // return <><Planet
-  //   key={"Sun"}
-  //   click={onEnter}
-  //   pName={"Sun"}
-  //   style={{ 
-  //     top: `${number}%`,
-  //     left: `${50}%`,
-  //     backgroundColor: "yellow",
-  //     position: "absolute",
-  //     width: "200px",
-  //     height: "200px",
-  //     transform: 'translate(-50%, -50%)',
-  //     borderRadius: '50%',
-  //     display: 'flex',
-  //     justifyContent: 'center',
-  //     alignItems: 'center',
-  //     cursor: 'pointer',
-  //     zIndex: 2
-  // }}>
-  // {"Bongo"}
-  // </Planet>
-  // <Planet
-  //   key={"Sun1"}
-  //   click={onEnter}
-  //   pName={"Sun1"}
-  //   style={{ 
-  //     top: `${70}%`,
-  //     left: `${50}%`,
-  //     backgroundColor: "yellow",
-  //     position: "absolute",
-  //     width: "200px",
-  //     height: "200px",
-  //     transform: 'translate(-50%, -50%)',
-  //     borderRadius: '50%',
-  //     display: 'flex',
-  //     justifyContent: 'center',
-  //     alignItems: 'center',
-  //     cursor: 'pointer',
-  //     zIndex: 2
-  // }}>
-  // {"Bongo"}
-  // </Planet>
-  // </>
-  // ;
+
