@@ -60,8 +60,18 @@ async function fetchPlanets() {
   }
 }
 
-function Planet({ click, pName, children, style }) {
+function Planet({ timeline, click, pName, children, style }) {
   let planetRef = useRef();
+
+  useGSAP(() => {
+    // gsap.to(planetRef.current, {
+    //   rotation: "+360"
+    // });
+    timeline && timeline.to(planetRef.current, {
+      rotation: "+=360"
+    }, "<");
+  }, [timeline])
+
   return <div ref={planetRef} onClick={click} className={pName} style={style}>{children}</div>;
 }
 
@@ -94,12 +104,12 @@ function processPlanets(PlanetList) {
 }
 
 
-function GetPlanets({ planets, onEnter }) {
-  
+function GetPlanets({ planets, onEnter, timeline }) {
   return (
     processPlanets(planets).map((planet) => (
     <Planet
       key={planet.name}
+      timeline={timeline}
       click={onEnter}
       pName={planet.className}
       style={{ 
@@ -132,21 +142,37 @@ function logPlanets(planets) {
 function App() {
   const [planets, setPlanets] = useState([]);
   const container = useRef();
+
+  // const orbit = useRef();
+
+  // UseState for timeline?
+  const [tl, setTL] = useState();
+
   const { contextSafe } = useGSAP({ scope: container });
 
   useGSAP(() => {
     fetchPlanets().then(setPlanets).catch(error => console.error(error));
   }, []);
 
+  useGSAP(() => {
+    const tl = gsap.timeline({ repeat:-1 });
+    setTL(tl);
+  });
+
   const onEnter = contextSafe(({ currentTarget }) => {
     gsap.to(currentTarget, { rotation: "+=360", duration: 1 });
     gsap.to(currentTarget, { scale: 1.5, duration: 1 });
   });
 
+  // Orbiting Animation
+  // useGSAP(() => {
+  //   gsap.to()
+  // }, { scope: orbit});  
+
   return (
     <div className="App">
       <div ref={container}>
-        <GetPlanets planets={planets} onEnter={onEnter} ></GetPlanets>
+        <GetPlanets planets={planets} onEnter={onEnter} timeline={tl} ></GetPlanets>
       </div>
     </div>
   );
