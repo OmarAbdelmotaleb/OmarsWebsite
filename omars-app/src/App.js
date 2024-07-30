@@ -62,17 +62,43 @@ async function fetchPlanets() {
 
 function Planet({ timeline, click, pName, children, style }) {
   let planetRef = useRef();
-
+  const orbitRadius = 150;
   useGSAP(() => {
     // gsap.to(planetRef.current, {
     //   rotation: "+360"
     // });
-    timeline && timeline.to(planetRef.current, {
-      rotation: "+=360",
-      motionPath: {
-        path: [{scale: 1.2}, {scale: 1.0}]
-      }
-    }, "<");
+    const path = [];
+    const numPoints = 360; // Number of points on the circle (adjust for smoothness)
+    const angleIncrement = 360 / numPoints;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    for (let i = 0; i < numPoints; i++) {
+      const angle = i * angleIncrement;
+      const radians = angle * (Math.PI/180);
+      const x = Math.cos(radians) * 150;
+      const y = Math.sin(radians) * 150;
+      path.push({x, y});
+    }
+    console.log(path);
+    // [
+    //   {x: -250, y: 250},  
+    //   {x: -250, y: -250},  
+    //   {x: 250, y: -250},  
+    //   {x: 250, y: 250},  
+    // ],
+    if (pName !== "AboutMe") {
+      timeline && timeline.to(planetRef.current, {
+        // rotation: "+=360",
+        duration: 2,
+        motionPath: {
+          path: path,
+          curviness: 1,
+        }
+      }, "<");
+
+    }
+
   }, [timeline])
 
   return <div ref={planetRef} onClick={click} className={pName} style={style}>{children}</div>;
