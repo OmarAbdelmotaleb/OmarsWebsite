@@ -1,7 +1,7 @@
  /*
   TODO: 
   - Populate the data structure and we'll customize automatically ig 
-  - Work on Orbiting animation
+  - Work on Orbiting animation NEED TO FIGURE OUT HOW TO MOVE THINGS AROUND TOWN
   - Work on Zooming / Fade animations on a timeline
   - Dynamically sizing planets
 
@@ -68,7 +68,10 @@ function Planet({ timeline, click, pName, children, style }) {
     //   rotation: "+360"
     // });
     timeline && timeline.to(planetRef.current, {
-      rotation: "+=360"
+      rotation: "+=360",
+      motionPath: {
+        path: [{scale: 1.2}, {scale: 1.0}]
+      }
     }, "<");
   }, [timeline])
 
